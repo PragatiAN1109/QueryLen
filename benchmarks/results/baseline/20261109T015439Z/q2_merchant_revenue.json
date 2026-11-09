@@ -1,0 +1,41 @@
+{
+  "query": "q2_merchant_revenue",
+  "columns": [
+    "region",
+    "total_revenue",
+    "transaction_count",
+    "avg_amount"
+  ],
+  "rows": [
+    [
+      "ASIA_PACIFIC",
+      "4978043.13",
+      27492,
+      "181.07"
+    ],
+    [
+      "NORTH_AMERICA",
+      "449056.25",
+      2525,
+      "177.84"
+    ],
+    [
+      "EUROPE",
+      "339742.86",
+      1802,
+      "188.54"
+    ],
+    [
+      "LATIN_AMERICA",
+      "100537.00",
+      552,
+      "182.13"
+    ],
+    [
+      "MIDDLE_EAST_AFRICA",
+      "51699.88",
+      316,
+      "163.61"
+    ]
+  ]
+}

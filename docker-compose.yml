@@ -1,0 +1,42 @@
+# Local PostgreSQL for QueryLens.
+# Project name is fixed so the volume is always "sql-query-optimization-lab_pgdata"
+# and never collides with unrelated Docker resources.
+name: sql-query-optimization-lab
+
+services:
+  postgres:
+    image: postgres:17.6   # pinned; change deliberately, results depend on the version
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?set POSTGRES_DB in .env}
+      POSTGRES_USER: ${POSTGRES_USER:?set POSTGRES_USER in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    # Bound to localhost only. Host port defaults to 5433 to avoid clashing
+    # with a locally installed PostgreSQL on 5432.
+    ports:
+      - "127.0.0.1:${POSTGRES_HOST_PORT:-5433}:5432"
+    # Modest laptop settings, not tuned for analytics.
+    command:
+      - postgres
+      - -c
+      - shared_buffers=256MB
+      - -c
+      - maintenance_work_mem=256MB
+      - -c
+      - max_wal_size=2GB
+      - -c
+      - timezone=UTC
+      - -c
+      - log_timezone=UTC
+    shm_size: 256mb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  pgdata:

@@ -1,0 +1,21 @@
+{
+  "config": {
+    "count": 1000000,
+    "seed": 42,
+    "start_date": "2025-11-01",
+    "end_date": "2026-11-01",
+    "num_merchants": 1000
+  },
+  "generator_version": "1.0.0",
+  "generated_records": 1000000,
+  "inserted_records": 1000000,
+  "fingerprint_md5": "16aae85345e5d7881554301ac5753e4f",
+  "generation_seconds": 7.253,
+  "copy_seconds": 0.187,
+  "load_transaction_seconds": 7.593,
+  "vacuum_analyze_seconds": 0.287,
+  "heap_bytes": 100859904,
+  "index_bytes": 22487040,
+  "total_bytes": 123404288,
+  "total_size_pretty": "118 MB"
+}

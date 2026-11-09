@@ -1,0 +1,218 @@
+[
+  {
+    "Plan": {
+      "Node Type": "Sort",
+      "Parallel Aware": false,
+      "Async Capable": false,
+      "Startup Cost": 21798.02,
+      "Total Cost": 21798.03,
+      "Plan Rows": 4,
+      "Plan Width": 84,
+      "Actual Startup Time": 14.591,
+      "Actual Total Time": 15.379,
+      "Actual Rows": 4,
+      "Actual Loops": 1,
+      "Sort Key": [
+        "(sum(amount)) DESC",
+        "payment_method"
+      ],
+      "Sort Method": "quicksort",
+      "Sort Space Used": 25,
+      "Sort Space Type": "Memory",
+      "Shared Hit Blocks": 12386,
+      "Shared Read Blocks": 0,
+      "Shared Dirtied Blocks": 0,
+      "Shared Written Blocks": 0,
+      "Local Hit Blocks": 0,
+      "Local Read Blocks": 0,
+      "Local Dirtied Blocks": 0,
+      "Local Written Blocks": 0,
+      "Temp Read Blocks": 0,
+      "Temp Written Blocks": 0,
+      "Plans": [
+        {
+          "Node Type": "Aggregate",
+          "Strategy": "Sorted",
+          "Partial Mode": "Finalize",
+          "Parent Relationship": "Outer",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Startup Cost": 21773.85,
+          "Total Cost": 21797.98,
+          "Plan Rows": 4,
+          "Plan Width": 84,
+          "Actual Startup Time": 14.5,
+          "Actual Total Time": 15.375,
+          "Actual Rows": 4,
+          "Actual Loops": 1,
+          "Group Key": [
+            "payment_method"
+          ],
+          "Shared Hit Blocks": 12386,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "Plans": [
+            {
+              "Node Type": "Gather Merge",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 21773.85,
+              "Total Cost": 21797.83,
+              "Plan Rows": 8,
+              "Plan Width": 84,
+              "Actual Startup Time": 14.392,
+              "Actual Total Time": 15.359,
+              "Actual Rows": 12,
+              "Actual Loops": 1,
+              "Workers Planned": 2,
+              "Workers Launched": 2,
+              "Shared Hit Blocks": 12386,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0,
+              "Plans": [
+                {
+                  "Node Type": "Aggregate",
+                  "Strategy": "Sorted",
+                  "Partial Mode": "Partial",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Startup Cost": 20773.82,
+                  "Total Cost": 20796.88,
+                  "Plan Rows": 4,
+                  "Plan Width": 84,
+                  "Actual Startup Time": 13.476,
+                  "Actual Total Time": 13.635,
+                  "Actual Rows": 4,
+                  "Actual Loops": 3,
+                  "Group Key": [
+                    "payment_method"
+                  ],
+                  "Shared Hit Blocks": 12386,
+                  "Shared Read Blocks": 0,
+                  "Shared Dirtied Blocks": 0,
+                  "Shared Written Blocks": 0,
+                  "Local Hit Blocks": 0,
+                  "Local Read Blocks": 0,
+                  "Local Dirtied Blocks": 0,
+                  "Local Written Blocks": 0,
+                  "Temp Read Blocks": 0,
+                  "Temp Written Blocks": 0,
+                  "Workers": [],
+                  "Plans": [
+                    {
+                      "Node Type": "Sort",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Startup Cost": 20773.82,
+                      "Total Cost": 20779.57,
+                      "Plan Rows": 2301,
+                      "Plan Width": 18,
+                      "Actual Startup Time": 13.459,
+                      "Actual Total Time": 13.503,
+                      "Actual Rows": 1829,
+                      "Actual Loops": 3,
+                      "Sort Key": [
+                        "payment_method"
+                      ],
+                      "Sort Method": "quicksort",
+                      "Sort Space Used": 125,
+                      "Sort Space Type": "Memory",
+                      "Shared Hit Blocks": 12386,
+                      "Shared Read Blocks": 0,
+                      "Shared Dirtied Blocks": 0,
+                      "Shared Written Blocks": 0,
+                      "Local Hit Blocks": 0,
+                      "Local Read Blocks": 0,
+                      "Local Dirtied Blocks": 0,
+                      "Local Written Blocks": 0,
+                      "Temp Read Blocks": 0,
+                      "Temp Written Blocks": 0,
+                      "Workers": [
+                        {
+                          "Worker Number": 0,
+                          "Sort Method": "quicksort",
+                          "Sort Space Used": 117,
+                          "Sort Space Type": "Memory"
+                        },
+                        {
+                          "Worker Number": 1,
+                          "Sort Method": "quicksort",
+                          "Sort Space Used": 118,
+                          "Sort Space Type": "Memory"
+                        }
+                      ],
+                      "Plans": [
+                        {
+                          "Node Type": "Seq Scan",
+                          "Parent Relationship": "Outer",
+                          "Parallel Aware": true,
+                          "Async Capable": false,
+                          "Relation Name": "transactions",
+                          "Alias": "transactions",
+                          "Startup Cost": 0.0,
+                          "Total Cost": 20645.33,
+                          "Plan Rows": 2301,
+                          "Plan Width": 18,
+                          "Actual Startup Time": 11.539,
+                          "Actual Total Time": 13.291,
+                          "Actual Rows": 1829,
+                          "Actual Loops": 3,
+                          "Filter": "((transaction_date >= '2026-10-01 00:00:00+00'::timestamp with time zone) AND (transaction_date < '2026-10-08 00:00:00+00'::timestamp with time zone) AND ((region)::text = 'EUROPE'::text) AND ((status)::text = 'SUCCESS'::text))",
+                          "Rows Removed by Filter": 331504,
+                          "Shared Hit Blocks": 12312,
+                          "Shared Read Blocks": 0,
+                          "Shared Dirtied Blocks": 0,
+                          "Shared Written Blocks": 0,
+                          "Local Hit Blocks": 0,
+                          "Local Read Blocks": 0,
+                          "Local Dirtied Blocks": 0,
+                          "Local Written Blocks": 0,
+                          "Temp Read Blocks": 0,
+                          "Temp Written Blocks": 0,
+                          "Workers": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "Settings": {},
+    "Planning": {
+      "Shared Hit Blocks": 0,
+      "Shared Read Blocks": 0,
+      "Shared Dirtied Blocks": 0,
+      "Shared Written Blocks": 0,
+      "Local Hit Blocks": 0,
+      "Local Read Blocks": 0,
+      "Local Dirtied Blocks": 0,
+      "Local Written Blocks": 0,
+      "Temp Read Blocks": 0,
+      "Temp Written Blocks": 0
+    },
+    "Planning Time": 0.051,
+    "Triggers": [],
+    "Execution Time": 15.392
+  }
+]

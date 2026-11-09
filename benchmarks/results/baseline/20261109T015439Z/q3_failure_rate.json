@@ -1,0 +1,41 @@
+{
+  "query": "q3_failure_rate",
+  "columns": [
+    "region",
+    "transaction_count",
+    "failed_count",
+    "failure_pct"
+  ],
+  "rows": [
+    [
+      "MIDDLE_EAST_AFRICA",
+      23711,
+      1251,
+      "5.276"
+    ],
+    [
+      "NORTH_AMERICA",
+      196638,
+      9983,
+      "5.077"
+    ],
+    [
+      "ASIA_PACIFIC",
+      146852,
+      7402,
+      "5.040"
+    ],
+    [
+      "EUROPE",
+      150079,
+      7559,
+      "5.037"
+    ],
+    [
+      "LATIN_AMERICA",
+      32980,
+      1628,
+      "4.936"
+    ]
+  ]
+}

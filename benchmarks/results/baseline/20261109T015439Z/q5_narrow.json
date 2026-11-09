@@ -1,0 +1,35 @@
+{
+  "query": "q5_narrow",
+  "columns": [
+    "payment_method",
+    "transaction_count",
+    "total_revenue",
+    "avg_amount"
+  ],
+  "rows": [
+    [
+      "CREDIT_CARD",
+      2457,
+      "211817.65",
+      "86.21"
+    ],
+    [
+      "DEBIT_CARD",
+      1360,
+      "125141.75",
+      "92.02"
+    ],
+    [
+      "DIGITAL_WALLET",
+      1241,
+      "102004.48",
+      "82.20"
+    ],
+    [
+      "BANK_TRANSFER",
+      430,
+      "32279.18",
+      "75.07"
+    ]
+  ]
+}

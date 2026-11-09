@@ -1,0 +1,55 @@
+{
+  "captured_at_utc": "2026-11-09T03:02:29.632074+00:00",
+  "host": {
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "machine": "arm64",
+    "cpu": "Apple M3",
+    "logical_cpus": 8,
+    "memory_bytes": 17179869184,
+    "load_average": [
+      3.43896484375,
+      4.55908203125,
+      4.38525390625
+    ]
+  },
+  "python": "3.12.7",
+  "psycopg": "3.2.3",
+  "docker": {
+    "vm_ncpu_mem_os": "8 8218316800 Docker Desktop",
+    "container_limits_nanocpus_memory": "0 0",
+    "note": "0 0 means no container CPU/memory limit (bounded by the Docker VM)"
+  },
+  "postgres": {
+    "version": "PostgreSQL 17.6 (Debian 17.6-2.pgdg13+1) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "settings": {
+      "server_version": "17.6 (Debian 17.6-2.pgdg13+1)",
+      "shared_buffers": "256MB",
+      "work_mem": "4MB",
+      "effective_cache_size": "4GB",
+      "max_parallel_workers_per_gather": "2",
+      "random_page_cost": "4",
+      "jit": "on",
+      "jit_above_cost": "100000",
+      "TimeZone": "UTC",
+      "max_worker_processes": "8",
+      "max_parallel_workers": "8",
+      "huge_pages": "try"
+    }
+  },
+  "transactions_table": {
+    "relpages": 12312,
+    "relallvisible": 12276,
+    "reltuples": 1000000.0,
+    "n_dead_tup": 0,
+    "last_analyze": "2026-11-09T01:31:04.601322+00:00",
+    "last_vacuum": "2026-11-09T01:31:04.406519+00:00",
+    "last_autovacuum": null,
+    "heap_bytes": 100859904,
+    "index_bytes": 22487040,
+    "total_bytes": 123404288
+  },
+  "database_buffer_counters_at_start": {
+    "blks_hit": 12577837,
+    "blks_read": 245686
+  }
+}

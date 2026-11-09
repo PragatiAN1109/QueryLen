@@ -1,0 +1,2414 @@
+{
+  "run_id": "20261109T030227Z",
+  "phase": "4-validated-benchmarks",
+  "smoke": false,
+  "parameters": {
+    "samples": 30,
+    "warmups": 5,
+    "cycles": 2,
+    "server_samples": 5,
+    "seed": 20261109,
+    "experiment": "all"
+  },
+  "percentile_method": "linear interpolation between closest ranks (Hyndman-Fan type 7)",
+  "drift_threshold_pct": 15.0,
+  "timing": {
+    "primary": "client-observed: perf_counter_ns around execute()+fetchall(), autocommit, auto-prepare disabled",
+    "diagnostic": "server-side EXPLAIN (ANALYZE, BUFFERS, TIMING OFF) Execution Time; not mixed with client timings"
+  },
+  "elapsed_seconds": 57.1,
+  "dataset_before": {
+    "row_count": 1000000,
+    "fingerprint": "16aae85345e5d7881554301ac5753e4f"
+  },
+  "dataset_after": {
+    "row_count": 1000000,
+    "fingerprint": "16aae85345e5d7881554301ac5753e4f"
+  },
+  "baseline_restored": true,
+  "groups": [
+    {
+      "experiment": "brin",
+      "config": "brin_ppr128",
+      "ddl": [
+        "CREATE INDEX exp_brin_txn_date_ppr128 ON transactions USING brin (transaction_date) WITH (pages_per_range = 128)"
+      ],
+      "build_seconds": [
+        0.03029612501268275,
+        0.028944707999471575
+      ],
+      "objects": {
+        "exp_brin_txn_date_ppr128": {
+          "bytes": 49152,
+          "pretty": "48 kB"
+        }
+      },
+      "schedule": [
+        "A0",
+        "B0",
+        "A1",
+        "B1",
+        "A2"
+      ],
+      "workloads": {
+        "q1_category_revenue": {
+          "baseline_sql": "sql/baseline/q1_category_revenue.sql",
+          "optimized_sql": "sql/baseline/q1_category_revenue.sql",
+          "baseline": {
+            "n": 90,
+            "mean": 21.18043007777778,
+            "median": 19.870979,
+            "p95": 24.793737649999997,
+            "p99": 40.38573648999998,
+            "p99_approximate": true,
+            "min": 18.76275,
+            "max": 77.8725,
+            "stdev": 6.520180052620213,
+            "q1": 19.36931225,
+            "q3": 20.5516565,
+            "iqr": 1.1823442499999999
+          },
+          "optimized": {
+            "n": 60,
+            "mean": 9.753233349999999,
+            "median": 7.653479,
+            "p95": 13.95413715,
+            "p99": 48.02568796999978,
+            "p99_approximate": true,
+            "min": 7.084,
+            "max": 86.123709,
+            "stdev": 10.282160926050578,
+            "q1": 7.4614895,
+            "q3": 8.33052075,
+            "iqr": 0.8690312499999999
+          },
+          "comparison": {
+            "baseline_median": 19.870979,
+            "optimized_median": 7.653479,
+            "speedup_ratio": 2.5963328572535445,
+            "median_change_pct": -61.484137243565094
+          },
+          "bracketed_cycles": [
+            {
+              "cycle": 0,
+              "control_median": 19.545104,
+              "optimized_median": 7.542479,
+              "ratio": 2.591336880089424
+            },
+            {
+              "cycle": 1,
+              "control_median": 19.895552,
+              "optimized_median": 7.9736460000000005,
+              "ratio": 2.4951636929956504
+            }
+          ],
+          "baseline_drift": {
+            "batch_medians": [
+              19.5351455,
+              19.5550625,
+              20.2360415
+            ],
+            "spread_pct": 3.58787192038063,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "optimized_batch_drift": {
+            "batch_medians": [
+              7.542479,
+              7.9736460000000005
+            ],
+            "spread_pct": 5.716515750325593,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "batch_medians": {
+            "A0": 19.5351455,
+            "B0": 7.542479,
+            "A1": 19.5550625,
+            "B1": 7.9736460000000005,
+            "A2": 20.2360415
+          },
+          "correct": true,
+          "baseline_vs_phase2_reference": true,
+          "plans": {
+            "baseline": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/brin/brin_ppr128/q1_category_revenue__baseline.json",
+              "node_types": [
+                "Limit",
+                "  Sort",
+                "    Aggregate (Sorted)",
+                "      Gather Merge",
+                "        Sort",
+                "          Aggregate (Hashed)",
+                "            Seq Scan"
+              ],
+              "planning_ms": 0.034,
+              "execution_ms": 19.116,
+              "rows_examined_by_scans": 999999,
+              "rows_returned": 5,
+              "root_shared_hit_blocks": 12328,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 2,
+              "uses_optimization_objects": [],
+              "scan_nodes": [
+                {
+                  "node_type": "Seq Scan",
+                  "relation": "transactions",
+                  "plan_rows_total_est": 92081,
+                  "actual_rows_total": 92304,
+                  "rows_removed_by_filter_total": 907695,
+                  "shared_hit_blocks": 12312,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 5
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Sorted",
+                  "actual_rows_total": 8
+                },
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 24
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 24
+                }
+              ]
+            },
+            "optimized": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/brin/brin_ppr128/q1_category_revenue__optimized.json",
+              "node_types": [
+                "Limit",
+                "  Sort",
+                "    Aggregate (Sorted)",
+                "      Gather Merge",
+                "        Sort",
+                "          Aggregate (Hashed)",
+                "            Bitmap Heap Scan",
+                "              Bitmap Index Scan"
+              ],
+              "planning_ms": 0.078,
+              "execution_ms": 8.995,
+              "rows_examined_by_scans": 103239,
+              "rows_returned": 5,
+              "root_shared_hit_blocks": 1298,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 2,
+              "uses_optimization_objects": [
+                "exp_brin_txn_date_ppr128"
+              ],
+              "scan_nodes": [
+                {
+                  "node_type": "Bitmap Heap Scan",
+                  "relation": "transactions",
+                  "plan_rows_total_est": 92081,
+                  "actual_rows_total": 92304,
+                  "rows_removed_by_filter_total": 10131,
+                  "exact_heap_blocks": 0,
+                  "lossy_heap_blocks": 505,
+                  "rows_removed_by_index_recheck": 268,
+                  "shared_hit_blocks": 1282,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                },
+                {
+                  "node_type": "Bitmap Index Scan",
+                  "index_name": "exp_brin_txn_date_ppr128",
+                  "plan_rows_total_est": 247423,
+                  "actual_rows_total": 12800,
+                  "rows_removed_by_filter_total": 0,
+                  "shared_hit_blocks": 2,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 5
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Sorted",
+                  "actual_rows_total": 8
+                },
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 24
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 24
+                }
+              ]
+            }
+          },
+          "server_side_execution_ms": {
+            "baseline": {
+              "n": 15,
+              "mean": 19.403599999999997,
+              "median": 19.189,
+              "p95": 21.5337,
+              "p99": 22.54674,
+              "p99_approximate": true,
+              "min": 18.342,
+              "max": 22.8,
+              "stdev": 1.2164485662311066,
+              "q1": 18.399,
+              "q3": 19.723,
+              "iqr": 1.323999999999998
+            },
+            "optimized": {
+              "n": 10,
+              "mean": 8.7319,
+              "median": 8.896,
+              "p95": 9.9478,
+              "p99": 10.12636,
+              "p99_approximate": true,
+              "min": 7.248,
+              "max": 10.171,
+              "stdev": 0.9143899544991123,
+              "q1": 8.3765,
+              "q3": 9.12175,
+              "iqr": 0.7452500000000004
+            }
+          }
+        },
+        "q5_narrow": {
+          "baseline_sql": "sql/baseline/q5_narrow.sql",
+          "optimized_sql": "sql/baseline/q5_narrow.sql",
+          "baseline": {
+            "n": 90,
+            "mean": 17.6240634,
+            "median": 16.895770499999998,
+            "p95": 20.727275,
+            "p99": 27.498876869999997,
+            "p99_approximate": true,
+            "min": 15.890334,
+            "max": 32.028458,
+            "stdev": 2.3089572508107863,
+            "q1": 16.439958249999997,
+            "q3": 17.7308745,
+            "iqr": 1.2909162500000022
+          },
+          "optimized": {
+            "n": 60,
+            "mean": 3.85757145,
+            "median": 3.1531875,
+            "p95": 8.643443749999996,
+            "p99": 12.806299999999993,
+            "p99_approximate": true,
+            "min": 2.822916,
+            "max": 13.7975,
+            "stdev": 2.1056734490851334,
+            "q1": 3.03687475,
+            "q3": 3.4492495,
+            "iqr": 0.4123747500000001
+          },
+          "comparison": {
+            "baseline_median": 16.895770499999998,
+            "optimized_median": 3.1531875,
+            "speedup_ratio": 5.358314562644942,
+            "median_change_pct": -81.33741518328507
+          },
+          "bracketed_cycles": [
+            {
+              "cycle": 0,
+              "control_median": 16.59779175,
+              "optimized_median": 3.0965625,
+              "ratio": 5.360069996972449
+            },
+            {
+              "cycle": 1,
+              "control_median": 16.9542395,
+              "optimized_median": 3.2578959999999997,
+              "ratio": 5.204045647865986
+            }
+          ],
+          "baseline_drift": {
+            "batch_medians": [
+              16.585459,
+              16.610124499999998,
+              17.298354500000002
+            ],
+            "spread_pct": 4.298316374602607,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "optimized_batch_drift": {
+            "batch_medians": [
+              3.0965625,
+              3.2578959999999997
+            ],
+            "spread_pct": 5.210083762236337,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "batch_medians": {
+            "A0": 16.585459,
+            "B0": 3.0965625,
+            "A1": 16.610124499999998,
+            "B1": 3.2578959999999997,
+            "A2": 17.298354500000002
+          },
+          "correct": true,
+          "baseline_vs_phase2_reference": true,
+          "plans": {
+            "baseline": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/brin/brin_ppr128/q5_narrow__baseline.json",
+              "node_types": [
+                "Sort",
+                "  Aggregate (Sorted)",
+                "    Gather Merge",
+                "      Aggregate (Sorted)",
+                "        Sort",
+                "          Seq Scan"
+              ],
+              "planning_ms": 0.051,
+              "execution_ms": 15.392,
+              "rows_examined_by_scans": 999999,
+              "rows_returned": 4,
+              "root_shared_hit_blocks": 12386,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 2,
+              "uses_optimization_objects": [],
+              "scan_nodes": [
+                {
+                  "node_type": "Seq Scan",
+                  "relation": "transactions",
+                  "plan_rows_total_est": 5522,
+                  "actual_rows_total": 5487,
+                  "rows_removed_by_filter_total": 994512,
+                  "shared_hit_blocks": 12312,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 4
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Sorted",
+                  "actual_rows_total": 4
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Sorted",
+                  "actual_rows_total": 12
+                },
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 5487
+                }
+              ]
+            },
+            "optimized": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/brin/brin_ppr128/q5_narrow__optimized.json",
+              "node_types": [
+                "Sort",
+                "  Aggregate (Hashed)",
+                "    Bitmap Heap Scan",
+                "      Bitmap Index Scan"
+              ],
+              "planning_ms": 0.029,
+              "execution_ms": 2.702,
+              "rows_examined_by_scans": 31289,
+              "rows_returned": 4,
+              "root_shared_hit_blocks": 386,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 0,
+              "uses_optimization_objects": [
+                "exp_brin_txn_date_ppr128"
+              ],
+              "scan_nodes": [
+                {
+                  "node_type": "Bitmap Heap Scan",
+                  "relation": "transactions",
+                  "plan_rows_total_est": 5522,
+                  "actual_rows_total": 5488,
+                  "rows_removed_by_filter_total": 16736,
+                  "exact_heap_blocks": 0,
+                  "lossy_heap_blocks": 384,
+                  "rows_removed_by_index_recheck": 9065,
+                  "shared_hit_blocks": 386,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                },
+                {
+                  "node_type": "Bitmap Index Scan",
+                  "index_name": "exp_brin_txn_date_ppr128",
+                  "plan_rows_total_est": 30928,
+                  "actual_rows_total": 3840,
+                  "rows_removed_by_filter_total": 0,
+                  "shared_hit_blocks": 2,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 4
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 4
+                }
+              ]
+            }
+          },
+          "server_side_execution_ms": {
+            "baseline": {
+              "n": 15,
+              "mean": 16.284000000000002,
+              "median": 16.19,
+              "p95": 17.6845,
+              "p99": 17.6929,
+              "p99_approximate": true,
+              "min": 15.259,
+              "max": 17.695,
+              "stdev": 0.7909878994920575,
+              "q1": 15.752500000000001,
+              "q3": 16.7155,
+              "iqr": 0.9629999999999974
+            },
+            "optimized": {
+              "n": 10,
+              "mean": 2.6738,
+              "median": 2.623,
+              "p95": 2.98365,
+              "p99": 3.00633,
+              "p99_approximate": true,
+              "min": 2.503,
+              "max": 3.012,
+              "stdev": 0.18169620554956867,
+              "q1": 2.53475,
+              "q3": 2.75,
+              "iqr": 0.21525000000000016
+            }
+          }
+        },
+        "q5_broad": {
+          "baseline_sql": "sql/baseline/q5_broad.sql",
+          "optimized_sql": "sql/baseline/q5_broad.sql",
+          "baseline": {
+            "n": 90,
+            "mean": 33.3386949,
+            "median": 32.34447900000001,
+            "p95": 40.402185749999994,
+            "p99": 48.27592825999999,
+            "p99_approximate": true,
+            "min": 30.1015,
+            "max": 54.377916,
+            "stdev": 3.749203344077299,
+            "q1": 31.2303025,
+            "q3": 33.807854250000005,
+            "iqr": 2.577551750000005
+          },
+          "optimized": {
+            "n": 60,
+            "mean": 37.58701871666666,
+            "median": 32.169083,
+            "p95": 58.79042644999999,
+            "p99": 126.67807771999964,
+            "p99_approximate": true,
+            "min": 29.973375,
+            "max": 188.532375,
+            "stdev": 21.86321417745117,
+            "q1": 31.298104,
+            "q3": 33.262219,
+            "iqr": 1.9641150000000032
+          },
+          "comparison": {
+            "baseline_median": 32.34447900000001,
+            "optimized_median": 32.169083,
+            "speedup_ratio": 1.0054523158151571,
+            "median_change_pct": -0.5422749273531544
+          },
+          "bracketed_cycles": [
+            {
+              "cycle": 0,
+              "control_median": 31.52797925,
+              "optimized_median": 31.447563,
+              "ratio": 1.0025571536338127
+            },
+            {
+              "cycle": 1,
+              "control_median": 32.2296145,
+              "optimized_median": 32.581562500000004,
+              "ratio": 0.9891979397857298
+            }
+          ],
+          "baseline_drift": {
+            "batch_medians": [
+              31.5871875,
+              31.468771,
+              32.990458
+            ],
+            "spread_pct": 4.835546326229253,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "optimized_batch_drift": {
+            "batch_medians": [
+              31.447563,
+              32.581562500000004
+            ],
+            "spread_pct": 3.606001202700525,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "batch_medians": {
+            "A0": 31.5871875,
+            "B0": 31.447563,
+            "A1": 31.468771,
+            "B1": 32.581562500000004,
+            "A2": 32.990458
+          },
+          "correct": true,
+          "baseline_vs_phase2_reference": true,
+          "plans": {
+            "baseline": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/brin/brin_ppr128/q5_broad__baseline.json",
+              "node_types": [
+                "Sort",
+                "  Aggregate (Sorted)",
+                "    Gather Merge",
+                "      Sort",
+                "        Aggregate (Hashed)",
+                "          Seq Scan"
+              ],
+              "planning_ms": 0.056,
+              "execution_ms": 32.55,
+              "rows_examined_by_scans": 1000002,
+              "rows_returned": 4,
+              "root_shared_hit_blocks": 12328,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 2,
+              "uses_optimization_objects": [],
+              "scan_nodes": [
+                {
+                  "node_type": "Seq Scan",
+                  "relation": "transactions",
+                  "plan_rows_total_est": 244534,
+                  "actual_rows_total": 245325,
+                  "rows_removed_by_filter_total": 754677,
+                  "shared_hit_blocks": 12312,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 4
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Sorted",
+                  "actual_rows_total": 4
+                },
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 12
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 12
+                }
+              ]
+            },
+            "optimized": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/brin/brin_ppr128/q5_broad__optimized.json",
+              "node_types": [
+                "Sort",
+                "  Aggregate (Sorted)",
+                "    Gather Merge",
+                "      Sort",
+                "        Aggregate (Hashed)",
+                "          Seq Scan"
+              ],
+              "planning_ms": 0.072,
+              "execution_ms": 37.921,
+              "rows_examined_by_scans": 1000002,
+              "rows_returned": 4,
+              "root_shared_hit_blocks": 12328,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 2,
+              "uses_optimization_objects": [],
+              "scan_nodes": [
+                {
+                  "node_type": "Seq Scan",
+                  "relation": "transactions",
+                  "plan_rows_total_est": 244534,
+                  "actual_rows_total": 245325,
+                  "rows_removed_by_filter_total": 754677,
+                  "shared_hit_blocks": 12312,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 4
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Sorted",
+                  "actual_rows_total": 4
+                },
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 12
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 12
+                }
+              ]
+            }
+          },
+          "server_side_execution_ms": {
+            "baseline": {
+              "n": 15,
+              "mean": 31.707733333333334,
+              "median": 31.67,
+              "p95": 33.4448,
+              "p99": 34.05856,
+              "p99_approximate": true,
+              "min": 30.004,
+              "max": 34.212,
+              "stdev": 1.196601883111784,
+              "q1": 30.911,
+              "q3": 32.3025,
+              "iqr": 1.3915000000000006
+            },
+            "optimized": {
+              "n": 10,
+              "mean": 35.7436,
+              "median": 35.819,
+              "p95": 41.475300000000004,
+              "p99": 42.78066,
+              "p99_approximate": true,
+              "min": 30.41,
+              "max": 43.107,
+              "stdev": 3.8435743838833725,
+              "q1": 33.058499999999995,
+              "q3": 37.371249999999996,
+              "iqr": 4.312750000000001
+            }
+          }
+        }
+      }
+    },
+    {
+      "experiment": "btree",
+      "config": "btree_merchant_status_cov",
+      "ddl": [
+        "CREATE INDEX exp_btree_merchant_status_cov ON transactions (merchant_id, status) INCLUDE (region, amount)"
+      ],
+      "build_seconds": [
+        0.6778985830023885,
+        1.3209958340012236
+      ],
+      "objects": {
+        "exp_btree_merchant_status_cov": {
+          "bytes": 53682176,
+          "pretty": "51 MB"
+        }
+      },
+      "schedule": [
+        "A0",
+        "B0",
+        "A1",
+        "B1",
+        "A2"
+      ],
+      "workloads": {
+        "q2_high_volume_1345": {
+          "baseline_sql": "sql/baseline/q2_merchant_revenue.sql",
+          "optimized_sql": "sql/baseline/q2_merchant_revenue.sql",
+          "baseline": {
+            "n": 90,
+            "mean": 21.192181455555556,
+            "median": 17.8418335,
+            "p95": 32.76089185,
+            "p99": 64.06189273999999,
+            "p99_approximate": true,
+            "min": 15.331167,
+            "max": 77.093125,
+            "stdev": 9.061898748581882,
+            "q1": 16.656062249999998,
+            "q3": 21.65915625,
+            "iqr": 5.003094000000001
+          },
+          "optimized": {
+            "n": 60,
+            "mean": 4.051645150000001,
+            "median": 3.9443960000000002,
+            "p95": 4.61468095,
+            "p99": 5.8097489699999985,
+            "p99_approximate": true,
+            "min": 3.706708,
+            "max": 6.10175,
+            "stdev": 0.38866163574405993,
+            "q1": 3.8550102500000003,
+            "q3": 4.0859267500000005,
+            "iqr": 0.2309165000000002
+          },
+          "comparison": {
+            "baseline_median": 17.8418335,
+            "optimized_median": 3.9443960000000002,
+            "speedup_ratio": 4.523337286621323,
+            "median_change_pct": -77.89242904884186
+          },
+          "bracketed_cycles": [
+            {
+              "cycle": 0,
+              "control_median": 17.6571145,
+              "optimized_median": 3.9188335,
+              "ratio": 4.505706736456141
+            },
+            {
+              "cycle": 1,
+              "control_median": 18.566198,
+              "optimized_median": 3.9838335000000002,
+              "ratio": 4.660385028641382
+            }
+          ],
+          "baseline_drift": {
+            "batch_medians": [
+              17.2588955,
+              18.0553335,
+              19.0770625
+            ],
+            "spread_pct": 10.534666021936333,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "optimized_batch_drift": {
+            "batch_medians": [
+              3.9188335,
+              3.9838335000000002
+            ],
+            "spread_pct": 1.658656842654846,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "batch_medians": {
+            "A0": 17.2588955,
+            "B0": 3.9188335,
+            "A1": 18.0553335,
+            "B1": 3.9838335000000002,
+            "A2": 19.0770625
+          },
+          "correct": true,
+          "baseline_vs_phase2_reference": true,
+          "plans": {
+            "baseline": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/btree/btree_merchant_status_cov/q2_high_volume_1345__baseline.json",
+              "node_types": [
+                "Sort",
+                "  Aggregate (Sorted)",
+                "    Gather Merge",
+                "      Sort",
+                "        Aggregate (Hashed)",
+                "          Seq Scan"
+              ],
+              "planning_ms": 0.038,
+              "execution_ms": 15.909,
+              "rows_examined_by_scans": 1000002,
+              "rows_returned": 5,
+              "root_shared_hit_blocks": 12328,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 2,
+              "uses_optimization_objects": [],
+              "scan_nodes": [
+                {
+                  "node_type": "Seq Scan",
+                  "relation": "transactions",
+                  "plan_rows_total_est": 32981,
+                  "actual_rows_total": 32688,
+                  "rows_removed_by_filter_total": 967314,
+                  "shared_hit_blocks": 12312,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 5
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Sorted",
+                  "actual_rows_total": 5
+                },
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 15
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 15
+                }
+              ]
+            },
+            "optimized": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/btree/btree_merchant_status_cov/q2_high_volume_1345__optimized.json",
+              "node_types": [
+                "Sort",
+                "  Aggregate (Hashed)",
+                "    Index Only Scan"
+              ],
+              "planning_ms": 0.032,
+              "execution_ms": 4.87,
+              "rows_examined_by_scans": 32687,
+              "rows_returned": 5,
+              "root_shared_hit_blocks": 205,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 0,
+              "uses_optimization_objects": [
+                "exp_btree_merchant_status_cov"
+              ],
+              "scan_nodes": [
+                {
+                  "node_type": "Index Only Scan",
+                  "relation": "transactions",
+                  "index_name": "exp_btree_merchant_status_cov",
+                  "plan_rows_total_est": 32981,
+                  "actual_rows_total": 32687,
+                  "rows_removed_by_filter_total": 0,
+                  "heap_fetches": 0,
+                  "rows_removed_by_index_recheck": 0,
+                  "shared_hit_blocks": 205,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 5
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 5
+                }
+              ]
+            }
+          },
+          "server_side_execution_ms": {
+            "baseline": {
+              "n": 15,
+              "mean": 21.613133333333334,
+              "median": 17.358,
+              "p95": 42.0436,
+              "p99": 42.419920000000005,
+              "p99_approximate": true,
+              "min": 15.486,
+              "max": 42.514,
+              "stdev": 8.996797071868464,
+              "q1": 16.219,
+              "q3": 22.9765,
+              "iqr": 6.7575
+            },
+            "optimized": {
+              "n": 10,
+              "mean": 3.9975,
+              "median": 3.825,
+              "p95": 4.70805,
+              "p99": 4.71201,
+              "p99_approximate": true,
+              "min": 3.641,
+              "max": 4.713,
+              "stdev": 0.42000826711440387,
+              "q1": 3.6865,
+              "q3": 4.20125,
+              "iqr": 0.5147499999999998
+            }
+          }
+        },
+        "q2_low_volume_1427": {
+          "baseline_sql": "sql/experiments/q2_merchant_revenue_low_volume.sql",
+          "optimized_sql": "sql/experiments/q2_merchant_revenue_low_volume.sql",
+          "baseline": {
+            "n": 90,
+            "mean": 19.506625022222224,
+            "median": 15.735375000000001,
+            "p95": 44.97432919999993,
+            "p99": 68.89457587,
+            "p99_approximate": true,
+            "min": 13.959583,
+            "max": 69.671917,
+            "stdev": 11.499432127709317,
+            "q1": 14.98898925,
+            "q3": 18.36606225,
+            "iqr": 3.3770729999999993
+          },
+          "optimized": {
+            "n": 60,
+            "mean": 0.44318468333333333,
+            "median": 0.4151665,
+            "p95": 0.6113628499999993,
+            "p99": 1.202046409999998,
+            "p99_approximate": true,
+            "min": 0.240625,
+            "max": 1.581417,
+            "stdev": 0.18426150574681752,
+            "q1": 0.36701025,
+            "q3": 0.44608349999999997,
+            "iqr": 0.07907324999999998
+          },
+          "comparison": {
+            "baseline_median": 15.735375000000001,
+            "optimized_median": 0.4151665,
+            "speedup_ratio": 37.90136005674832,
+            "median_change_pct": -97.36157225360057
+          },
+          "bracketed_cycles": [
+            {
+              "cycle": 0,
+              "control_median": 15.60151025,
+              "optimized_median": 0.3935835,
+              "ratio": 39.63964508166628
+            },
+            {
+              "cycle": 1,
+              "control_median": 16.163427,
+              "optimized_median": 0.4209165,
+              "ratio": 38.40055450427816
+            }
+          ],
+          "baseline_drift": {
+            "batch_medians": [
+              15.219437500000002,
+              15.983583,
+              16.343271
+            ],
+            "spread_pct": 7.3841986604301235,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "optimized_batch_drift": {
+            "batch_medians": [
+              0.3935835,
+              0.4209165
+            ],
+            "spread_pct": 6.944650880943955,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "batch_medians": {
+            "A0": 15.219437500000002,
+            "B0": 0.3935835,
+            "A1": 15.983583,
+            "B1": 0.4209165,
+            "A2": 16.343271
+          },
+          "correct": true,
+          "baseline_vs_phase2_reference": null,
+          "plans": {
+            "baseline": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/btree/btree_merchant_status_cov/q2_low_volume_1427__baseline.json",
+              "node_types": [
+                "Sort",
+                "  Aggregate (Sorted)",
+                "    Gather Merge",
+                "      Aggregate (Sorted)",
+                "        Sort",
+                "          Seq Scan"
+              ],
+              "planning_ms": 0.064,
+              "execution_ms": 14.45,
+              "rows_examined_by_scans": 999999,
+              "rows_returned": 4,
+              "root_shared_hit_blocks": 12386,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 2,
+              "uses_optimization_objects": [],
+              "scan_nodes": [
+                {
+                  "node_type": "Seq Scan",
+                  "relation": "transactions",
+                  "plan_rows_total_est": 401,
+                  "actual_rows_total": 126,
+                  "rows_removed_by_filter_total": 999873,
+                  "shared_hit_blocks": 12312,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 4
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Sorted",
+                  "actual_rows_total": 4
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Sorted",
+                  "actual_rows_total": 9
+                },
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 126
+                }
+              ]
+            },
+            "optimized": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/btree/btree_merchant_status_cov/q2_low_volume_1427__optimized.json",
+              "node_types": [
+                "Sort",
+                "  Aggregate (Hashed)",
+                "    Index Only Scan"
+              ],
+              "planning_ms": 0.018,
+              "execution_ms": 0.036,
+              "rows_examined_by_scans": 126,
+              "rows_returned": 4,
+              "root_shared_hit_blocks": 5,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 0,
+              "uses_optimization_objects": [
+                "exp_btree_merchant_status_cov"
+              ],
+              "scan_nodes": [
+                {
+                  "node_type": "Index Only Scan",
+                  "relation": "transactions",
+                  "index_name": "exp_btree_merchant_status_cov",
+                  "plan_rows_total_est": 401,
+                  "actual_rows_total": 126,
+                  "rows_removed_by_filter_total": 0,
+                  "heap_fetches": 0,
+                  "rows_removed_by_index_recheck": 0,
+                  "shared_hit_blocks": 5,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 4
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 4
+                }
+              ]
+            }
+          },
+          "server_side_execution_ms": {
+            "baseline": {
+              "n": 15,
+              "mean": 16.3388,
+              "median": 15.53,
+              "p95": 22.5941,
+              "p99": 22.88362,
+              "p99_approximate": true,
+              "min": 13.471,
+              "max": 22.956,
+              "stdev": 2.8641424096677075,
+              "q1": 14.815999999999999,
+              "q3": 16.8385,
+              "iqr": 2.022500000000001
+            },
+            "optimized": {
+              "n": 10,
+              "mean": 0.0314,
+              "median": 0.0295,
+              "p95": 0.04450000000000001,
+              "p99": 0.048100000000000004,
+              "p99_approximate": true,
+              "min": 0.026,
+              "max": 0.049,
+              "stdev": 0.007275529763071095,
+              "q1": 0.0265,
+              "q3": 0.03075,
+              "iqr": 0.00425
+            }
+          }
+        }
+      }
+    },
+    {
+      "experiment": "preaggregation",
+      "config": "preagg_daily",
+      "ddl": [
+        "sql/experiments/preagg_daily_build.sql"
+      ],
+      "build_seconds": [
+        1.0415626250032801,
+        1.0251988340023672
+      ],
+      "objects": {
+        "exp_merchant_daily_success": {
+          "bytes": 17195008,
+          "pretty": "16 MB",
+          "rows": 227067
+        },
+        "exp_region_daily_status": {
+          "bytes": 1417216,
+          "pretty": "1384 kB",
+          "rows": 7250
+        }
+      },
+      "schedule": [
+        "A0",
+        "B0",
+        "A1",
+        "B1",
+        "A2"
+      ],
+      "workloads": {
+        "q3_failure_rate": {
+          "baseline_sql": "sql/baseline/q3_failure_rate.sql",
+          "optimized_sql": "sql/experiments/q3_failure_rate_preagg_daily.sql",
+          "baseline": {
+            "n": 90,
+            "mean": 54.108667100000005,
+            "median": 44.475104,
+            "p95": 92.1237958,
+            "p99": 144.23856411999995,
+            "p99_approximate": true,
+            "min": 33.974375,
+            "max": 221.977209,
+            "stdev": 25.730016786212236,
+            "q1": 41.73047975,
+            "q3": 55.6688545,
+            "iqr": 13.938374750000001
+          },
+          "optimized": {
+            "n": 60,
+            "mean": 1.6706528333333333,
+            "median": 1.3880835,
+            "p95": 3.699364549999999,
+            "p99": 5.56540090999999,
+            "p99_approximate": true,
+            "min": 0.989667,
+            "max": 7.165334,
+            "stdev": 1.0029382700280138,
+            "q1": 1.220177,
+            "q3": 1.498938,
+            "iqr": 0.27876100000000004
+          },
+          "comparison": {
+            "baseline_median": 44.475104,
+            "optimized_median": 1.3880835,
+            "speedup_ratio": 32.04065461479803,
+            "median_change_pct": -96.87896513968803
+          },
+          "bracketed_cycles": [
+            {
+              "cycle": 0,
+              "control_median": 44.44356225,
+              "optimized_median": 1.31725,
+              "ratio": 33.73965629151642
+            },
+            {
+              "cycle": 1,
+              "control_median": 44.6899475,
+              "optimized_median": 1.3999584999999999,
+              "ratio": 31.922337340714034
+            }
+          ],
+          "baseline_drift": {
+            "batch_medians": [
+              44.0896875,
+              44.797437,
+              44.582458
+            ],
+            "spread_pct": 1.6052495268876779,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "optimized_batch_drift": {
+            "batch_medians": [
+              1.31725,
+              1.3999584999999999
+            ],
+            "spread_pct": 6.278876447143659,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "batch_medians": {
+            "A0": 44.0896875,
+            "B0": 1.31725,
+            "A1": 44.797437,
+            "B1": 1.3999584999999999,
+            "A2": 44.582458
+          },
+          "correct": true,
+          "baseline_vs_phase2_reference": true,
+          "plans": {
+            "baseline": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/preaggregation/preagg_daily/q3_failure_rate__baseline.json",
+              "node_types": [
+                "Sort",
+                "  Aggregate (Sorted)",
+                "    Gather Merge",
+                "      Sort",
+                "        Aggregate (Hashed)",
+                "          Seq Scan"
+              ],
+              "planning_ms": 0.068,
+              "execution_ms": 41.199,
+              "rows_examined_by_scans": 999999,
+              "rows_returned": 5,
+              "root_shared_hit_blocks": 12328,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 2,
+              "uses_optimization_objects": [],
+              "scan_nodes": [
+                {
+                  "node_type": "Seq Scan",
+                  "relation": "transactions",
+                  "plan_rows_total_est": 546828,
+                  "actual_rows_total": 550260,
+                  "rows_removed_by_filter_total": 449739,
+                  "shared_hit_blocks": 12312,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 5
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Sorted",
+                  "actual_rows_total": 5
+                },
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 15
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 15
+                }
+              ]
+            },
+            "optimized": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/preaggregation/preagg_daily/q3_failure_rate__optimized.json",
+              "node_types": [
+                "Sort",
+                "  Aggregate (Hashed)",
+                "    Seq Scan"
+              ],
+              "planning_ms": 0.025,
+              "execution_ms": 0.699,
+              "rows_examined_by_scans": 7250,
+              "rows_returned": 5,
+              "root_shared_hit_blocks": 128,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 0,
+              "uses_optimization_objects": [
+                "exp_region_daily_status"
+              ],
+              "scan_nodes": [
+                {
+                  "node_type": "Seq Scan",
+                  "relation": "exp_region_daily_status",
+                  "plan_rows_total_est": 3669,
+                  "actual_rows_total": 3661,
+                  "rows_removed_by_filter_total": 3589,
+                  "shared_hit_blocks": 128,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 5
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 5
+                }
+              ]
+            }
+          },
+          "server_side_execution_ms": {
+            "baseline": {
+              "n": 15,
+              "mean": 51.010666666666665,
+              "median": 44.493,
+              "p95": 83.22490000000006,
+              "p99": 128.04897999999997,
+              "p99_approximate": true,
+              "min": 35.677,
+              "max": 139.255,
+              "stdev": 25.24471726256142,
+              "q1": 40.679500000000004,
+              "q3": 48.726,
+              "iqr": 8.046499999999995
+            },
+            "optimized": {
+              "n": 10,
+              "mean": 0.6191,
+              "median": 0.6174999999999999,
+              "p95": 0.6552,
+              "p99": 0.65664,
+              "p99_approximate": true,
+              "min": 0.573,
+              "max": 0.657,
+              "stdev": 0.02864902557970634,
+              "q1": 0.59975,
+              "q3": 0.64325,
+              "iqr": 0.04349999999999998
+            }
+          }
+        },
+        "q4_merchant_ranking": {
+          "baseline_sql": "sql/baseline/q4_merchant_ranking.sql",
+          "optimized_sql": "sql/experiments/q4_merchant_ranking_preagg_daily.sql",
+          "baseline": {
+            "n": 90,
+            "mean": 85.81663795555556,
+            "median": 63.158249999999995,
+            "p95": 189.89406424999996,
+            "p99": 384.66472685999975,
+            "p99_approximate": true,
+            "min": 46.021958,
+            "max": 755.145584,
+            "stdev": 84.65273560753886,
+            "q1": 57.367042,
+            "q3": 79.66161475000001,
+            "iqr": 22.294572750000015
+          },
+          "optimized": {
+            "n": 60,
+            "mean": 21.067107,
+            "median": 19.33925,
+            "p95": 30.656118149999994,
+            "p99": 40.83655096999997,
+            "p99_approximate": true,
+            "min": 16.688625,
+            "max": 46.061542,
+            "stdev": 5.086097747348921,
+            "q1": 18.240011,
+            "q3": 21.67650025,
+            "iqr": 3.436489250000001
+          },
+          "comparison": {
+            "baseline_median": 63.158249999999995,
+            "optimized_median": 19.33925,
+            "speedup_ratio": 3.2658065850537117,
+            "median_change_pct": -69.3796930725598
+          },
+          "bracketed_cycles": [
+            {
+              "cycle": 0,
+              "control_median": 63.54513575,
+              "optimized_median": 20.8737085,
+              "ratio": 3.0442667027758867
+            },
+            {
+              "cycle": 1,
+              "control_median": 63.310375,
+              "optimized_median": 18.6684165,
+              "ratio": 3.3913093271729826
+            }
+          ],
+          "baseline_drift": {
+            "batch_medians": [
+              63.589167,
+              63.5011045,
+              63.119645500000004
+            ],
+            "spread_pct": 0.743859532607798,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "optimized_batch_drift": {
+            "batch_medians": [
+              20.8737085,
+              18.6684165
+            ],
+            "spread_pct": 11.812956926475259,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "batch_medians": {
+            "A0": 63.589167,
+            "B0": 20.8737085,
+            "A1": 63.5011045,
+            "B1": 18.6684165,
+            "A2": 63.119645500000004
+          },
+          "correct": true,
+          "baseline_vs_phase2_reference": true,
+          "plans": {
+            "baseline": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/preaggregation/preagg_daily/q4_merchant_ranking__baseline.json",
+              "node_types": [
+                "Limit",
+                "  Sort",
+                "    Aggregate (Sorted)",
+                "      Gather Merge",
+                "        Sort",
+                "          Aggregate (Hashed)",
+                "            Seq Scan"
+              ],
+              "planning_ms": 0.057,
+              "execution_ms": 57.243,
+              "rows_examined_by_scans": 999999,
+              "rows_returned": 20,
+              "root_shared_hit_blocks": 12326,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 2,
+              "uses_optimization_objects": [],
+              "scan_nodes": [
+                {
+                  "node_type": "Seq Scan",
+                  "relation": "transactions",
+                  "plan_rows_total_est": 900300,
+                  "actual_rows_total": 899907,
+                  "rows_removed_by_filter_total": 100092,
+                  "shared_hit_blocks": 12312,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "top-N heapsort",
+                  "actual_rows_total": 20
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Sorted",
+                  "actual_rows_total": 315
+                },
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 3000
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 3000
+                }
+              ]
+            },
+            "optimized": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/preaggregation/preagg_daily/q4_merchant_ranking__optimized.json",
+              "node_types": [
+                "Limit",
+                "  Sort",
+                "    Aggregate (Hashed)",
+                "      Gather",
+                "        Aggregate (Hashed)",
+                "          Seq Scan"
+              ],
+              "planning_ms": 0.054,
+              "execution_ms": 27.082,
+              "rows_examined_by_scans": 227068,
+              "rows_returned": 20,
+              "root_shared_hit_blocks": 1472,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 1,
+              "uses_optimization_objects": [
+                "exp_merchant_daily_success"
+              ],
+              "scan_nodes": [
+                {
+                  "node_type": "Seq Scan",
+                  "relation": "exp_merchant_daily_success",
+                  "plan_rows_total_est": 227067,
+                  "actual_rows_total": 227068,
+                  "rows_removed_by_filter_total": 0,
+                  "shared_hit_blocks": 1472,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "top-N heapsort",
+                  "actual_rows_total": 20
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 315
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 2000
+                }
+              ]
+            }
+          },
+          "server_side_execution_ms": {
+            "baseline": {
+              "n": 15,
+              "mean": 87.84813333333334,
+              "median": 57.508,
+              "p95": 256.21740000000005,
+              "p99": 306.09547999999995,
+              "p99_approximate": true,
+              "min": 51.231,
+              "max": 318.565,
+              "stdev": 77.80572943911253,
+              "q1": 55.1755,
+              "q3": 68.43700000000001,
+              "iqr": 13.261500000000012
+            },
+            "optimized": {
+              "n": 10,
+              "mean": 27.1423,
+              "median": 22.988500000000002,
+              "p95": 40.53155,
+              "p99": 41.93591,
+              "p99_approximate": true,
+              "min": 20.257,
+              "max": 42.287,
+              "stdev": 8.250466371329832,
+              "q1": 20.4485,
+              "q3": 32.010999999999996,
+              "iqr": 11.562499999999996
+            }
+          }
+        }
+      }
+    },
+    {
+      "experiment": "preaggregation",
+      "config": "preagg_monthly",
+      "ddl": [
+        "sql/experiments/preagg_monthly_build.sql"
+      ],
+      "build_seconds": [
+        0.6303645000007236,
+        0.5223392909974791
+      ],
+      "objects": {
+        "exp_merchant_monthly_success": {
+          "bytes": 1343488,
+          "pretty": "1312 kB",
+          "rows": 12000
+        },
+        "exp_region_monthly_status": {
+          "bytes": 73728,
+          "pretty": "72 kB",
+          "rows": 240
+        }
+      },
+      "schedule": [
+        "A0",
+        "B0",
+        "A1",
+        "B1",
+        "A2"
+      ],
+      "workloads": {
+        "q3_failure_rate": {
+          "baseline_sql": "sql/baseline/q3_failure_rate.sql",
+          "optimized_sql": "sql/experiments/q3_failure_rate_preagg_monthly.sql",
+          "baseline": {
+            "n": 90,
+            "mean": 44.391619455555556,
+            "median": 42.151520500000004,
+            "p95": 52.14567065,
+            "p99": 91.71188024999998,
+            "p99_approximate": true,
+            "min": 38.75525,
+            "max": 124.137584,
+            "stdev": 10.618880824703716,
+            "q1": 40.44548975,
+            "q3": 44.143146,
+            "iqr": 3.6976562500000014
+          },
+          "optimized": {
+            "n": 60,
+            "mean": 0.6861507,
+            "median": 0.3934785,
+            "p95": 1.5591190499999987,
+            "p99": 4.597660439999999,
+            "p99_approximate": true,
+            "min": 0.294417,
+            "max": 4.616,
+            "stdev": 0.817630060686378,
+            "q1": 0.3449475,
+            "q3": 0.6236980000000001,
+            "iqr": 0.27875050000000007
+          },
+          "comparison": {
+            "baseline_median": 42.151520500000004,
+            "optimized_median": 0.3934785,
+            "speedup_ratio": 107.12534611166812,
+            "median_change_pct": -99.06651410119358
+          },
+          "bracketed_cycles": [
+            {
+              "cycle": 0,
+              "control_median": 42.6080415,
+              "optimized_median": 0.646896,
+              "ratio": 65.86536553016249
+            },
+            {
+              "cycle": 1,
+              "control_median": 41.779124749999994,
+              "optimized_median": 0.3551245,
+              "ratio": 117.64641625683385
+            }
+          ],
+          "baseline_drift": {
+            "batch_medians": [
+              42.499375,
+              42.716708,
+              40.8415415
+            ],
+            "spread_pct": 4.591321559202164,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "optimized_batch_drift": {
+            "batch_medians": [
+              0.646896,
+              0.3551245
+            ],
+            "spread_pct": 82.16034095084963,
+            "threshold_pct": 15.0,
+            "flagged": true
+          },
+          "batch_medians": {
+            "A0": 42.499375,
+            "B0": 0.646896,
+            "A1": 42.716708,
+            "B1": 0.3551245,
+            "A2": 40.8415415
+          },
+          "correct": true,
+          "baseline_vs_phase2_reference": true,
+          "plans": {
+            "baseline": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/preaggregation/preagg_monthly/q3_failure_rate__baseline.json",
+              "node_types": [
+                "Sort",
+                "  Aggregate (Sorted)",
+                "    Gather Merge",
+                "      Sort",
+                "        Aggregate (Hashed)",
+                "          Seq Scan"
+              ],
+              "planning_ms": 0.06,
+              "execution_ms": 45.13,
+              "rows_examined_by_scans": 999999,
+              "rows_returned": 5,
+              "root_shared_hit_blocks": 12328,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 2,
+              "uses_optimization_objects": [],
+              "scan_nodes": [
+                {
+                  "node_type": "Seq Scan",
+                  "relation": "transactions",
+                  "plan_rows_total_est": 546828,
+                  "actual_rows_total": 550260,
+                  "rows_removed_by_filter_total": 449739,
+                  "shared_hit_blocks": 12312,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 5
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Sorted",
+                  "actual_rows_total": 5
+                },
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 15
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 15
+                }
+              ]
+            },
+            "optimized": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/preaggregation/preagg_monthly/q3_failure_rate__optimized.json",
+              "node_types": [
+                "Sort",
+                "  Aggregate (Hashed)",
+                "    Seq Scan"
+              ],
+              "planning_ms": 0.126,
+              "execution_ms": 0.047,
+              "rows_examined_by_scans": 240,
+              "rows_returned": 5,
+              "root_shared_hit_blocks": 4,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 0,
+              "uses_optimization_objects": [
+                "exp_region_monthly_status"
+              ],
+              "scan_nodes": [
+                {
+                  "node_type": "Seq Scan",
+                  "relation": "exp_region_monthly_status",
+                  "plan_rows_total_est": 120,
+                  "actual_rows_total": 120,
+                  "rows_removed_by_filter_total": 120,
+                  "shared_hit_blocks": 4,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 5
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 5
+                }
+              ]
+            }
+          },
+          "server_side_execution_ms": {
+            "baseline": {
+              "n": 15,
+              "mean": 43.363733333333336,
+              "median": 43.062,
+              "p95": 49.2414,
+              "p99": 51.351479999999995,
+              "p99_approximate": true,
+              "min": 39.689,
+              "max": 51.879,
+              "stdev": 3.361197203095236,
+              "q1": 40.495,
+              "q3": 44.716499999999996,
+              "iqr": 4.221499999999999
+            },
+            "optimized": {
+              "n": 10,
+              "mean": 0.0345,
+              "median": 0.0345,
+              "p95": 0.04265,
+              "p99": 0.04373,
+              "p99_approximate": true,
+              "min": 0.028,
+              "max": 0.044,
+              "stdev": 0.005720334100576837,
+              "q1": 0.02925,
+              "q3": 0.0385,
+              "iqr": 0.009249999999999998
+            }
+          }
+        },
+        "q4_merchant_ranking": {
+          "baseline_sql": "sql/baseline/q4_merchant_ranking.sql",
+          "optimized_sql": "sql/experiments/q4_merchant_ranking_preagg_monthly.sql",
+          "baseline": {
+            "n": 90,
+            "mean": 61.86320138888888,
+            "median": 54.985646,
+            "p95": 72.5357875,
+            "p99": 240.71720676999996,
+            "p99_approximate": true,
+            "min": 50.342417,
+            "max": 292.591041,
+            "stdev": 31.766759382088146,
+            "q1": 53.230302249999994,
+            "q3": 59.58610425,
+            "iqr": 6.355802000000004
+          },
+          "optimized": {
+            "n": 60,
+            "mean": 2.506670133333333,
+            "median": 1.7508955,
+            "p95": 5.9721027,
+            "p99": 7.25539047,
+            "p99_approximate": true,
+            "min": 1.570458,
+            "max": 7.274959,
+            "stdev": 1.5186612545914253,
+            "q1": 1.6783332499999999,
+            "q3": 2.49073975,
+            "iqr": 0.8124065
+          },
+          "comparison": {
+            "baseline_median": 54.985646,
+            "optimized_median": 1.7508955,
+            "speedup_ratio": 31.40429911436748,
+            "median_change_pct": -96.81572259785763
+          },
+          "bracketed_cycles": [
+            {
+              "cycle": 0,
+              "control_median": 55.317989749999995,
+              "optimized_median": 2.5536044999999996,
+              "ratio": 21.6627084382096
+            },
+            {
+              "cycle": 1,
+              "control_median": 54.391437499999995,
+              "optimized_median": 1.6802920000000001,
+              "ratio": 32.370229400604174
+            }
+          ],
+          "baseline_drift": {
+            "batch_medians": [
+              55.643667,
+              54.9923125,
+              53.7905625
+            ],
+            "spread_pct": 3.445036478285574,
+            "threshold_pct": 15.0,
+            "flagged": false
+          },
+          "optimized_batch_drift": {
+            "batch_medians": [
+              2.5536044999999996,
+              1.6802920000000001
+            ],
+            "spread_pct": 51.97385335405986,
+            "threshold_pct": 15.0,
+            "flagged": true
+          },
+          "batch_medians": {
+            "A0": 55.643667,
+            "B0": 2.5536044999999996,
+            "A1": 54.9923125,
+            "B1": 1.6802920000000001,
+            "A2": 53.7905625
+          },
+          "correct": true,
+          "baseline_vs_phase2_reference": true,
+          "plans": {
+            "baseline": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/preaggregation/preagg_monthly/q4_merchant_ranking__baseline.json",
+              "node_types": [
+                "Limit",
+                "  Sort",
+                "    Aggregate (Sorted)",
+                "      Gather Merge",
+                "        Sort",
+                "          Aggregate (Hashed)",
+                "            Seq Scan"
+              ],
+              "planning_ms": 0.106,
+              "execution_ms": 94.127,
+              "rows_examined_by_scans": 999999,
+              "rows_returned": 20,
+              "root_shared_hit_blocks": 12326,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 2,
+              "uses_optimization_objects": [],
+              "scan_nodes": [
+                {
+                  "node_type": "Seq Scan",
+                  "relation": "transactions",
+                  "plan_rows_total_est": 900300,
+                  "actual_rows_total": 899907,
+                  "rows_removed_by_filter_total": 100092,
+                  "shared_hit_blocks": 12312,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "top-N heapsort",
+                  "actual_rows_total": 20
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Sorted",
+                  "actual_rows_total": 315
+                },
+                {
+                  "node_type": "Sort",
+                  "sort_method": "quicksort",
+                  "actual_rows_total": 3000
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 3000
+                }
+              ]
+            },
+            "optimized": {
+              "plan_file": "benchmarks/plans/validated/20261109T030227Z/preaggregation/preagg_monthly/q4_merchant_ranking__optimized.json",
+              "node_types": [
+                "Limit",
+                "  Sort",
+                "    Aggregate (Hashed)",
+                "      Seq Scan"
+              ],
+              "planning_ms": 0.083,
+              "execution_ms": 3.606,
+              "rows_examined_by_scans": 12000,
+              "rows_returned": 20,
+              "root_shared_hit_blocks": 128,
+              "root_shared_read_blocks": 0,
+              "temp_blocks": 0,
+              "workers_launched": 0,
+              "uses_optimization_objects": [
+                "exp_merchant_monthly_success"
+              ],
+              "scan_nodes": [
+                {
+                  "node_type": "Seq Scan",
+                  "relation": "exp_merchant_monthly_success",
+                  "plan_rows_total_est": 12000,
+                  "actual_rows_total": 12000,
+                  "rows_removed_by_filter_total": 0,
+                  "shared_hit_blocks": 128,
+                  "shared_read_blocks": 0,
+                  "temp_read_blocks": 0,
+                  "temp_written_blocks": 0
+                }
+              ],
+              "aggregate_and_sort_nodes": [
+                {
+                  "node_type": "Sort",
+                  "sort_method": "top-N heapsort",
+                  "actual_rows_total": 20
+                },
+                {
+                  "node_type": "Aggregate",
+                  "strategy": "Hashed",
+                  "hashagg_batches": 1,
+                  "actual_rows_total": 315
+                }
+              ]
+            }
+          },
+          "server_side_execution_ms": {
+            "baseline": {
+              "n": 15,
+              "mean": 68.81306666666666,
+              "median": 60.676,
+              "p95": 90.4197,
+              "p99": 103.23753999999998,
+              "p99_approximate": true,
+              "min": 55.26,
+              "max": 106.442,
+              "stdev": 15.000807228120694,
+              "q1": 57.2365,
+              "q3": 78.932,
+              "iqr": 21.695500000000003
+            },
+            "optimized": {
+              "n": 10,
+              "mean": 3.2533000000000003,
+              "median": 1.7810000000000001,
+              "p95": 9.212650000000009,
+              "p99": 12.972130000000002,
+              "p99_approximate": true,
+              "min": 1.407,
+              "max": 13.912,
+              "stdev": 3.8292957591587404,
+              "q1": 1.41975,
+              "q3": 3.0637499999999998,
+              "iqr": 1.6439999999999997
+            }
+          }
+        }
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "experiment": "brin",
+      "config": "brin_ppr128",
+      "workload": "q1_category_revenue",
+      "baseline_n": 90,
+      "optimized_n": 60,
+      "baseline_p50": 19.870979,
+      "optimized_p50": 7.653479,
+      "baseline_p95": 24.793737649999997,
+      "optimized_p95": 13.95413715,
+      "baseline_p99_approx": 40.38573648999998,
+      "optimized_p99_approx": 48.02568796999978,
+      "baseline_mean": 21.18043007777778,
+      "optimized_mean": 9.753233349999999,
+      "baseline_stdev": 6.520180052620213,
+      "optimized_stdev": 10.282160926050578,
+      "baseline_iqr": 1.1823442499999999,
+      "optimized_iqr": 0.8690312499999999,
+      "speedup": 2.5963328572535445,
+      "median_change_pct": -61.484137243565094,
+      "bracketed_ratio_min": 2.4951636929956504,
+      "bracketed_ratio_max": 2.591336880089424,
+      "baseline_drift_pct": 3.58787192038063,
+      "drift_flagged": false,
+      "server_baseline_exec_p50": 19.189,
+      "server_optimized_exec_p50": 8.896,
+      "optimizer_used_object": true,
+      "storage_bytes": 49152,
+      "correct": true
+    },
+    {
+      "experiment": "brin",
+      "config": "brin_ppr128",
+      "workload": "q5_narrow",
+      "baseline_n": 90,
+      "optimized_n": 60,
+      "baseline_p50": 16.895770499999998,
+      "optimized_p50": 3.1531875,
+      "baseline_p95": 20.727275,
+      "optimized_p95": 8.643443749999996,
+      "baseline_p99_approx": 27.498876869999997,
+      "optimized_p99_approx": 12.806299999999993,
+      "baseline_mean": 17.6240634,
+      "optimized_mean": 3.85757145,
+      "baseline_stdev": 2.3089572508107863,
+      "optimized_stdev": 2.1056734490851334,
+      "baseline_iqr": 1.2909162500000022,
+      "optimized_iqr": 0.4123747500000001,
+      "speedup": 5.358314562644942,
+      "median_change_pct": -81.33741518328507,
+      "bracketed_ratio_min": 5.204045647865986,
+      "bracketed_ratio_max": 5.360069996972449,
+      "baseline_drift_pct": 4.298316374602607,
+      "drift_flagged": false,
+      "server_baseline_exec_p50": 16.19,
+      "server_optimized_exec_p50": 2.623,
+      "optimizer_used_object": true,
+      "storage_bytes": 49152,
+      "correct": true
+    },
+    {
+      "experiment": "brin",
+      "config": "brin_ppr128",
+      "workload": "q5_broad",
+      "baseline_n": 90,
+      "optimized_n": 60,
+      "baseline_p50": 32.34447900000001,
+      "optimized_p50": 32.169083,
+      "baseline_p95": 40.402185749999994,
+      "optimized_p95": 58.79042644999999,
+      "baseline_p99_approx": 48.27592825999999,
+      "optimized_p99_approx": 126.67807771999964,
+      "baseline_mean": 33.3386949,
+      "optimized_mean": 37.58701871666666,
+      "baseline_stdev": 3.749203344077299,
+      "optimized_stdev": 21.86321417745117,
+      "baseline_iqr": 2.577551750000005,
+      "optimized_iqr": 1.9641150000000032,
+      "speedup": 1.0054523158151571,
+      "median_change_pct": -0.5422749273531544,
+      "bracketed_ratio_min": 0.9891979397857298,
+      "bracketed_ratio_max": 1.0025571536338127,
+      "baseline_drift_pct": 4.835546326229253,
+      "drift_flagged": false,
+      "server_baseline_exec_p50": 31.67,
+      "server_optimized_exec_p50": 35.819,
+      "optimizer_used_object": false,
+      "storage_bytes": 49152,
+      "correct": true
+    },
+    {
+      "experiment": "btree",
+      "config": "btree_merchant_status_cov",
+      "workload": "q2_high_volume_1345",
+      "baseline_n": 90,
+      "optimized_n": 60,
+      "baseline_p50": 17.8418335,
+      "optimized_p50": 3.9443960000000002,
+      "baseline_p95": 32.76089185,
+      "optimized_p95": 4.61468095,
+      "baseline_p99_approx": 64.06189273999999,
+      "optimized_p99_approx": 5.8097489699999985,
+      "baseline_mean": 21.192181455555556,
+      "optimized_mean": 4.051645150000001,
+      "baseline_stdev": 9.061898748581882,
+      "optimized_stdev": 0.38866163574405993,
+      "baseline_iqr": 5.003094000000001,
+      "optimized_iqr": 0.2309165000000002,
+      "speedup": 4.523337286621323,
+      "median_change_pct": -77.89242904884186,
+      "bracketed_ratio_min": 4.505706736456141,
+      "bracketed_ratio_max": 4.660385028641382,
+      "baseline_drift_pct": 10.534666021936333,
+      "drift_flagged": false,
+      "server_baseline_exec_p50": 17.358,
+      "server_optimized_exec_p50": 3.825,
+      "optimizer_used_object": true,
+      "storage_bytes": 53682176,
+      "correct": true
+    },
+    {
+      "experiment": "btree",
+      "config": "btree_merchant_status_cov",
+      "workload": "q2_low_volume_1427",
+      "baseline_n": 90,
+      "optimized_n": 60,
+      "baseline_p50": 15.735375000000001,
+      "optimized_p50": 0.4151665,
+      "baseline_p95": 44.97432919999993,
+      "optimized_p95": 0.6113628499999993,
+      "baseline_p99_approx": 68.89457587,
+      "optimized_p99_approx": 1.202046409999998,
+      "baseline_mean": 19.506625022222224,
+      "optimized_mean": 0.44318468333333333,
+      "baseline_stdev": 11.499432127709317,
+      "optimized_stdev": 0.18426150574681752,
+      "baseline_iqr": 3.3770729999999993,
+      "optimized_iqr": 0.07907324999999998,
+      "speedup": 37.90136005674832,
+      "median_change_pct": -97.36157225360057,
+      "bracketed_ratio_min": 38.40055450427816,
+      "bracketed_ratio_max": 39.63964508166628,
+      "baseline_drift_pct": 7.3841986604301235,
+      "drift_flagged": false,
+      "server_baseline_exec_p50": 15.53,
+      "server_optimized_exec_p50": 0.0295,
+      "optimizer_used_object": true,
+      "storage_bytes": 53682176,
+      "correct": true
+    },
+    {
+      "experiment": "preaggregation",
+      "config": "preagg_daily",
+      "workload": "q3_failure_rate",
+      "baseline_n": 90,
+      "optimized_n": 60,
+      "baseline_p50": 44.475104,
+      "optimized_p50": 1.3880835,
+      "baseline_p95": 92.1237958,
+      "optimized_p95": 3.699364549999999,
+      "baseline_p99_approx": 144.23856411999995,
+      "optimized_p99_approx": 5.56540090999999,
+      "baseline_mean": 54.108667100000005,
+      "optimized_mean": 1.6706528333333333,
+      "baseline_stdev": 25.730016786212236,
+      "optimized_stdev": 1.0029382700280138,
+      "baseline_iqr": 13.938374750000001,
+      "optimized_iqr": 0.27876100000000004,
+      "speedup": 32.04065461479803,
+      "median_change_pct": -96.87896513968803,
+      "bracketed_ratio_min": 31.922337340714034,
+      "bracketed_ratio_max": 33.73965629151642,
+      "baseline_drift_pct": 1.6052495268876779,
+      "drift_flagged": false,
+      "server_baseline_exec_p50": 44.493,
+      "server_optimized_exec_p50": 0.6174999999999999,
+      "optimizer_used_object": true,
+      "storage_bytes": 18612224,
+      "correct": true
+    },
+    {
+      "experiment": "preaggregation",
+      "config": "preagg_daily",
+      "workload": "q4_merchant_ranking",
+      "baseline_n": 90,
+      "optimized_n": 60,
+      "baseline_p50": 63.158249999999995,
+      "optimized_p50": 19.33925,
+      "baseline_p95": 189.89406424999996,
+      "optimized_p95": 30.656118149999994,
+      "baseline_p99_approx": 384.66472685999975,
+      "optimized_p99_approx": 40.83655096999997,
+      "baseline_mean": 85.81663795555556,
+      "optimized_mean": 21.067107,
+      "baseline_stdev": 84.65273560753886,
+      "optimized_stdev": 5.086097747348921,
+      "baseline_iqr": 22.294572750000015,
+      "optimized_iqr": 3.436489250000001,
+      "speedup": 3.2658065850537117,
+      "median_change_pct": -69.3796930725598,
+      "bracketed_ratio_min": 3.0442667027758867,
+      "bracketed_ratio_max": 3.3913093271729826,
+      "baseline_drift_pct": 0.743859532607798,
+      "drift_flagged": false,
+      "server_baseline_exec_p50": 57.508,
+      "server_optimized_exec_p50": 22.988500000000002,
+      "optimizer_used_object": true,
+      "storage_bytes": 18612224,
+      "correct": true
+    },
+    {
+      "experiment": "preaggregation",
+      "config": "preagg_monthly",
+      "workload": "q3_failure_rate",
+      "baseline_n": 90,
+      "optimized_n": 60,
+      "baseline_p50": 42.151520500000004,
+      "optimized_p50": 0.3934785,
+      "baseline_p95": 52.14567065,
+      "optimized_p95": 1.5591190499999987,
+      "baseline_p99_approx": 91.71188024999998,
+      "optimized_p99_approx": 4.597660439999999,
+      "baseline_mean": 44.391619455555556,
+      "optimized_mean": 0.6861507,
+      "baseline_stdev": 10.618880824703716,
+      "optimized_stdev": 0.817630060686378,
+      "baseline_iqr": 3.6976562500000014,
+      "optimized_iqr": 0.27875050000000007,
+      "speedup": 107.12534611166812,
+      "median_change_pct": -99.06651410119358,
+      "bracketed_ratio_min": 65.86536553016249,
+      "bracketed_ratio_max": 117.64641625683385,
+      "baseline_drift_pct": 4.591321559202164,
+      "drift_flagged": false,
+      "server_baseline_exec_p50": 43.062,
+      "server_optimized_exec_p50": 0.0345,
+      "optimizer_used_object": true,
+      "storage_bytes": 1417216,
+      "correct": true
+    },
+    {
+      "experiment": "preaggregation",
+      "config": "preagg_monthly",
+      "workload": "q4_merchant_ranking",
+      "baseline_n": 90,
+      "optimized_n": 60,
+      "baseline_p50": 54.985646,
+      "optimized_p50": 1.7508955,
+      "baseline_p95": 72.5357875,
+      "optimized_p95": 5.9721027,
+      "baseline_p99_approx": 240.71720676999996,
+      "optimized_p99_approx": 7.25539047,
+      "baseline_mean": 61.86320138888888,
+      "optimized_mean": 2.506670133333333,
+      "baseline_stdev": 31.766759382088146,
+      "optimized_stdev": 1.5186612545914253,
+      "baseline_iqr": 6.355802000000004,
+      "optimized_iqr": 0.8124065,
+      "speedup": 31.40429911436748,
+      "median_change_pct": -96.81572259785763,
+      "bracketed_ratio_min": 21.6627084382096,
+      "bracketed_ratio_max": 32.370229400604174,
+      "baseline_drift_pct": 3.445036478285574,
+      "drift_flagged": false,
+      "server_baseline_exec_p50": 60.676,
+      "server_optimized_exec_p50": 1.7810000000000001,
+      "optimizer_used_object": true,
+      "storage_bytes": 1417216,
+      "correct": true
+    }
+  ],
+  "charts": [
+    "charts/latency_p50.png",
+    "charts/latency_distribution.png",
+    "charts/storage_vs_speedup.png"
+  ],
+  "failures": []
+}

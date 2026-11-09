@@ -1,0 +1,35 @@
+{
+  "query": "q1_category_revenue",
+  "columns": [
+    "category",
+    "total_revenue",
+    "transaction_count"
+  ],
+  "rows": [
+    [
+      "Electronics",
+      "3797411.65",
+      14723
+    ],
+    [
+      "Home",
+      "1176302.14",
+      10512
+    ],
+    [
+      "Clothing",
+      "878604.94",
+      14928
+    ],
+    [
+      "Automotive",
+      "816921.58",
+      4224
+    ],
+    [
+      "Groceries",
+      "788986.80",
+      21123
+    ]
+  ]
+}
